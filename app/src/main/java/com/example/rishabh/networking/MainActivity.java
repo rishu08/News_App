@@ -25,7 +25,7 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<Article> news;
+    RecyclerView rv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +34,7 @@ public class MainActivity extends AppCompatActivity {
         MyTask myTask = new MyTask();
         myTask.execute("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=7bf504b0af4945dab09b4b62f65fd695");
 
-        RecyclerView rv = findViewById(R.id.recyclerView);
-        LinearLayoutManager llm =new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        NewsAdapter newsAdapter = new NewsAdapter(this,news);
-        rv.setAdapter(newsAdapter);
-
     }
-
 
 
 
@@ -88,10 +81,17 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
         Response response = convertJsonToResponse(s);
         ArrayList<Article> articleArrayList = response.getArticles();
-        news = articleArrayList;
+            rv = findViewById(R.id.recyclerView);
+            LinearLayoutManager llm =new LinearLayoutManager(getBaseContext());
+            rv.setLayoutManager(llm);
+            NewsAdapter newsAdapter = new NewsAdapter(getBaseContext(),articleArrayList);
+            rv.setAdapter(newsAdapter);
+
+
         }
     }
 
+    @Nullable
     private Response convertJsonToResponse(String json)
     {
 

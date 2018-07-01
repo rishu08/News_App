@@ -1,6 +1,8 @@
 package com.example.rishabh.networking;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +20,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     Context ctx;
     ArrayList<Article> articles;
 
-    public NewsAdapter(Context ctx, ArrayList<Article> articles) {
+
+     public NewsAdapter(Context ctx, ArrayList<Article> articles) {
         this.ctx = ctx;
         this.articles = articles;
     }
@@ -33,25 +36,35 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final NewsHolder holder, int position) {
 
-        Article article = articles.get(position);
+        final Article article = articles.get(position);
         holder.author.setText(article.getAuthor());
         holder.description.setText(article.getDescription());
         holder.publishedat.setText(article.getPublishedAt());
         holder.title.setText(article.getTitle());
         Picasso.get()
-                .load(article.getUrl())
+                .load(article.getUrlToImage())
                 .placeholder(R.drawable.ic_launcher_background)
-                .resize(50,50)
+                .resize(500,500)
                 .into(holder.image);
 
+
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = article.getUrl();
+
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                ctx.startActivity(i);
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return articles.size();
     }
 
 
@@ -73,4 +86,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
         }
     }
+
+
+
 }

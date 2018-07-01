@@ -15,7 +15,9 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fcbbd4d2"/>
+        android:background="#fc090909"
+        android:clipChildren="false"
+        android:clipToPadding="false" />
 
 
 </FrameLayout>
